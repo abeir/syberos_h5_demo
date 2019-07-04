@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>demo</title>
+    <style type="text/css">
+        button{
+            font-size: 2em;
+            margin: 4em 2em;
+            height: 4em;
+            width: 10em;
+        }
+    </style>
+    <script src="js/common.js"></script>
+</head>
+<body>
+
+<button id="post-message" onclick="doPostMessage()">PostMessage</button><br/>
+<button id="donwload" onclick="donwload()">donwload</button>
+
+<script>
+    var record = {
+        id: '1',
+        text: 'execute native',
+        callback: function(json){
+            return 'invoke callback: ' + json.text;
+        }
+    }
+
+    navigator.qt.onmessage = function(msg){
+        var json = JSON.parse(msg.data)
+
+        var rs = record.callback(json);
+        alert(rs);
+    }
+
+    //
+    function doPostMessage(){
+        alert('click post-message');
+
+        var msg = {
+            id: record.id,
+            text: record.text
+        }
+
+        navigator.qt.postMessage(JSON.stringify(msg));
+    }
+
+    function donwload(){
+        common.downloadFile('https://www.baidu.com/img/bd_logo1.png', function(rs){
+            alert(rs);
+        });
+    }
+</script>
+</body>
+</html>
