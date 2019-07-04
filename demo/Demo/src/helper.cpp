@@ -31,7 +31,7 @@ QString Helper::getInnerStorageRootPath(){
 QString Helper::downloadFile(QString url){
     qDebug() << Q_FUNC_INFO << " url: " << url << endl;
 
-    HttpClient::instance().get(url);
+    HttpClient::instance()->get(url);
 
     return env->dataPath();
 }
