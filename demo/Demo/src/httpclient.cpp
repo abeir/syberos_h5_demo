@@ -7,7 +7,7 @@ HttpClient::HttpClient(QObject *parent) :
     QObject(parent) {
     manager = new QNetworkAccessManager(this);
 
-    connect(manager, &QNetworkAccessManager::finished, this, &HttpClient::finished);
+    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(finished(QNetworkReply*)));
 }
 
 HttpClient::~HttpClient(){
@@ -15,10 +15,8 @@ HttpClient::~HttpClient(){
 }
 
 HttpClient* HttpClient::instance(){
-    if(NULL==httpClient){
-        httpClient = new HttpClient();
-    }
-    return httpClient;
+    static HttpClient client;
+    return &client;
 }
 
 void HttpClient::get(const QString &url){

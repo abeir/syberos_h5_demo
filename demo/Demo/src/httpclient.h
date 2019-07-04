@@ -21,7 +21,7 @@ private:
     HttpClient& operator=(HttpClient client) Q_DECL_EQ_DELETE;
 
     QNetworkAccessManager *manager;
-    static HttpClient *httpClient;
+
 public slots:
     void finished(QNetworkReply *reply);
 };
