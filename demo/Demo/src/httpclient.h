@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QtNetwork>
-
+#include <QMap>
 
 class HttpClient : public QObject
 {
@@ -12,8 +12,7 @@ public:
     static HttpClient* instance();
     ~HttpClient();
 
-    void get(const QString &url);
-
+    QNetworkReply* get(const QString &url);
 
 private:
     explicit HttpClient(QObject *parent = 0);
@@ -21,6 +20,10 @@ private:
     HttpClient& operator=(HttpClient client) Q_DECL_EQ_DELETE;
 
     QNetworkAccessManager *manager;
+
+signals:
+    void replyData(QString url, QByteArray bytes);
+    void replyError(QNetworkReply::NetworkError errorCode, QString errorMessage);
 
 public slots:
     void finished(QNetworkReply *reply);

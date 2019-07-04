@@ -8,6 +8,13 @@ CPageStackWindow {
         width:parent.width
         height:parent.height
 
+        Connections {
+            target: global
+            onSuccess: {
+                console.log('@@@ id: ', id, ' json: ', json);
+            }
+        }
+
         contentAreaItem: Item{
 
 
@@ -44,7 +51,7 @@ CPageStackWindow {
                     if(model.args){
                         //TODO
                         console.log('@@@ ', model.args, '\r\n');
-                        func(model.args[0]);
+                        func(model.id, model.args[0]);
 
                     }else{
                         result = func();

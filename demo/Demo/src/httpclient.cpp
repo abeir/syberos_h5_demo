@@ -19,16 +19,24 @@ HttpClient* HttpClient::instance(){
     return &client;
 }
 
-void HttpClient::get(const QString &url){
+QNetworkReply* HttpClient::get(const QString &url){
     qDebug() << Q_FUNC_INFO << endl;
-    manager->get(QNetworkRequest(QUrl(url)));
+    return manager->get(QNetworkRequest(QUrl(url)));
 }
 
 void HttpClient::finished(QNetworkReply *reply){
     qDebug() << Q_FUNC_INFO << endl;
 
     QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-    qDebug() << Q_FUNC_INFO << " statusCode: " << statusCode.toString() << endl;
 
+    qDebug() << Q_FUNC_INFO << " statusCode: " << statusCode.toString() << " error: " << reply->error() << endl;
+
+    if(QNetworkReply::NoError == reply->error()) {
+        QByteArray bytes = reply->readAll();
+        emit replyData(reply->url().toString(), bytes);
+    }else{
+        emit replyError(reply->error(), reply->errorString());
+    }
+    reply->deleteLater();
 }
 

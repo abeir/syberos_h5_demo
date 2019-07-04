@@ -23,13 +23,15 @@ SOURCES += src/main.cpp \
     src/helper.cpp \
     src/ui.cpp \
     src/globalobject.cpp \
-    src/httpclient.cpp
+    src/httpclient.cpp \
+    src/download.cpp
 
 HEADERS += src/Demo_Workspace.h \
     src/helper.h \
     src/ui.h \
     src/globalobject.h \
-    src/httpclient.h
+    src/httpclient.h \
+    src/download.h
 
 # Installation path
 target.path = $$INSTALL_DIR/bin

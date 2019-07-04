@@ -1,18 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<sopconfig xmlns:syberos="http://schemas.syberos.com/sop/res/syberos/v1"
-    syberos:sopid="com.syberos.demo"
-    syberos:versionCode="1"
-    syberos:versionName="1.0.0">
-    <uses-permission />
-    <uses-sdk />
-    <application syberos:debuggable="true"
-        syberos:description="Brief introduction of your application here. "
-        syberos:icon="res/Demo.png"
-        syberos:name="demo">
-        <uiapp syberos:id="Demo"
-            syberos:exec="bin/Demo"
-            syberos:icon="res/Demo.png"
-            syberos:launcher="true">
+<?xml version="1.0" encoding="UTF-8"?>
+<sopconfig syberos:versionCode="1" syberos:shareUserId="" xmlns:syberos="http://schemas.syberos.com/sop/res/syberos/v1" syberos:versionName="1.0.0" syberos:sopid="com.syberos.demo">
+    <uses-permission syberos:name="syberos.permission.ACCESS_WIFI"/>
+    <uses-sdk syberos:minSdkVersion="" syberos:targetSdkVersion=""/>
+    <application syberos:icon="res/Demo.png" syberos:description="Brief introduction of your application here. " syberos:debuggable="true" syberos:name="demo">
+        <uiapp syberos:icon="res/Demo.png" syberos:splash="" syberos:launcher="true" syberos:id="Demo" syberos:background="" syberos:exec="bin/Demo" syberos:name="">
+            <doctype syberos:id=""/>
         </uiapp>
     </application>
 </sopconfig>

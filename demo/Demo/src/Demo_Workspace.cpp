@@ -13,7 +13,7 @@ Demo_Workspace::Demo_Workspace()
     GlobalObject *global = new GlobalObject(this);
     m_view->rootContext()->setContextProperty("global", global);
 
-    Helper *helper = new Helper(this);
+    Helper *helper = Helper::instance();
     m_view->rootContext()->setContextProperty("helper", helper);
 
     m_view->setSource(QUrl("qrc:/qml/main.qml"));
