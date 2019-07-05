@@ -22,8 +22,8 @@ private:
     QNetworkAccessManager *manager;
 
 signals:
-    void replyData(QString url, QByteArray bytes);
-    void replyError(QNetworkReply::NetworkError errorCode, QString errorMessage);
+    void replyData(QString url, QNetworkReply *reply);
+    void replyError(QString url, long errorCode, QString errorMessage);
 
 public slots:
     void finished(QNetworkReply *reply);

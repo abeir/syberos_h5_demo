@@ -2,14 +2,22 @@
 #include "helper.h"
 #include "httpclient.h"
 #include <QObject>
+#include <QDebug>
+#include <QDir>
 
-Download::Download(QObject *parent) : QObject(parent)
-{
+Download::Download(QObject *parent) : QObject(parent) {
 
+    connect(HttpClient::instance(), &HttpClient::replyData, this, &Download::saveDownloadFile);
+    connect(HttpClient::instance(), &HttpClient::replyError, this, &Download::downloadFileFailed);
+}
+
+Download* Download::instance(){
+    static Download download;
+    return &download;
 }
 
 QString Download::getDownloadDir(){
-    return Helper::instance()->getDataRootPath();
+    return Helper::instance()->getInnerStorageRootPath();
 }
 
 /**
@@ -76,14 +84,75 @@ long Download::resume(long downloadID){
 long Download::start(QString url, QString name){
     taskId += 1;
     DownloadTask task;
+    task.downloadID = taskId;
     task.url = url;
     task.name = name;
 
-    QNetworkReply* reply = HttpClient::instance()->get(url);
-    task.reply = reply;
+    HttpClient::instance()->get(url);
 
     downloadTasks[taskId] = task;
     return taskId;
 }
 
 
+DownloadTask* Download::findTaskByUrl(QString url){
+    QMap<long, DownloadTask>::const_iterator it = downloadTasks.begin();
+    while(it != downloadTasks.end()){
+        DownloadTask task = it.value();
+        if(url == task.url){
+            return new DownloadTask(task);
+        }
+    }
+    return NULL;
+}
+
+
+// 槽，保存下载的文件
+void Download::saveDownloadFile(QString url, QNetworkReply *reply){
+    qDebug() << Q_FUNC_INFO << " url: " << url << endl;
+
+    QString path = getDownloadDir() + "/download";
+    QDir dir(path);
+    if(!dir.exists()){
+        dir.mkpath(path);
+    }
+
+    DownloadTask* task = findTaskByUrl(url);
+    if(NULL == task){
+        qDebug() << Q_FUNC_INFO << "cannot found task by url:" << url << endl;
+        return;
+    }
+    QString filename = task->name;
+    long downloadID = task->downloadID;
+    delete task;
+
+//    connect(reply, &QNetworkReply::downloadProgress, this, [](long downloadID, QString filename)->{
+//        emit downloadProgress(downloadID, filename, );
+//    });
+
+    QString filePath = path + "/" + filename;
+    QFile file(filePath);
+    if(!file.open(QIODevice::WriteOnly)){
+        qDebug() << Q_FUNC_INFO << " save fail: " << file.error() << file.errorString() << endl;
+        return;
+    }
+    file.write(reply->readAll());
+    file.close();
+
+    reply->deleteLater();
+    emit downloadCompleted(downloadID, filePath);
+}
+
+
+void Download::downloadFileFailed(QString url, long errorCode, QString errorMessage){
+    qDebug() << Q_FUNC_INFO << " url:" << url << "error: " << errorCode << errorMessage << endl;
+
+    DownloadTask* task = findTaskByUrl(url);
+    if(NULL == task){
+        qDebug() << Q_FUNC_INFO << "cannot found task by url:" << url << endl;
+        return;
+    }
+    long downloadID = task->downloadID;
+    delete task;
+    emit downloadFailed(downloadID, errorMessage, errorCode);
+}

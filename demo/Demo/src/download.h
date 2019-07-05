@@ -26,6 +26,8 @@ public:
 
     explicit Download(QObject *parent = 0);
 
+    static Download* instance();
+
     QString getDownloadDir();
 
     /**
@@ -96,7 +98,7 @@ signals:
      * @param result 下载任务失败的结果
      * @param errorCode 下载任务失败的错误码
      */
-    void downloadFailed(long downloadID, long result, long errorCode);
+    void downloadFailed(long downloadID, QString result, long errorCode);
     /**
      * @brief downloadPaused 添加监听下载暂停事件
      * @param downloadID 下载任务的Id
@@ -113,9 +115,15 @@ signals:
 
 public slots:
 
+    void saveDownloadFile(QString url, QNetworkReply *reply);
+
+    void downloadFileFailed(QString url, long errorCode, QString errorMessage);
+
 private:
     long taskId;
     QMap<long, DownloadTask> downloadTasks;
+
+    DownloadTask* findTaskByUrl(QString url);
 };
 
 #endif // DOWNLOAD_H

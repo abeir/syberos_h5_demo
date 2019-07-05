@@ -10,8 +10,6 @@
 Helper::Helper(QObject *parent) : QObject(parent) {
     env = new CEnvironment(this);
 
-    connect(HttpClient::instance(), SIGNAL(replyData(QString,QByteArray)), this, SLOT(saveDownloadFile(QString,QByteArray)));
-    connect(HttpClient::instance(), SIGNAL(replyError(QNetworkReply::NetworkError,QString)), this, SLOT(downloadFileFailed(QNetworkReply::NetworkError,QString)));
 }
 
 Helper* Helper::instance(){

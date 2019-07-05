@@ -32,11 +32,9 @@ void HttpClient::finished(QNetworkReply *reply){
     qDebug() << Q_FUNC_INFO << " statusCode: " << statusCode.toString() << " error: " << reply->error() << endl;
 
     if(QNetworkReply::NoError == reply->error()) {
-        QByteArray bytes = reply->readAll();
-        emit replyData(reply->url().toString(), bytes);
+        emit replyData(reply->url().toString(), reply);
     }else{
-        emit replyError(reply->error(), reply->errorString());
+        emit replyError(reply->url().toString(), reply->error(), reply->errorString());
     }
-    reply->deleteLater();
 }
 

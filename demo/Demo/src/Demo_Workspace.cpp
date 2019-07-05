@@ -1,6 +1,7 @@
 #include "Demo_Workspace.h"
 #include "globalobject.h"
 #include "helper.h"
+#include "download.h"
 #include <QQmlContext>
 #include <QDebug>
 #include <qqml.h>
@@ -17,6 +18,9 @@ Demo_Workspace::Demo_Workspace()
 
     Helper *helper = Helper::instance();
     m_view->rootContext()->setContextProperty("helper", helper);
+
+    Download *download = Download::instance();
+    m_view->rootContext()->setContextProperty("Download", download);
 
     m_view->setSource(QUrl("qrc:/qml/main.qml"));
     m_view->showFullScreen();
