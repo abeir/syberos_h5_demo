@@ -9,20 +9,36 @@
             height: 4em;
             width: 10em;
         }
+
+        .text{
+            font-size:2em;
+        }
     </style>
-    <script src="js/common.js"></script>
+    <script src="dist/vconsole.min.js"></script>
+    <script src="dist/syber.js"></script>
 </head>
 <body>
 
 <button id="donwload" onclick="donwload()">donwload</button>
 
+<div class="text" id="content"></div>
 <script>
-    common.init();
+        var vConsole = new VConsole();
+        console.log('Hello world');
 
+        document.getElementById("content").innerHTML = JSON.stringify(syber.os);
     function donwload(){
-        common.downloadFile('http://c.biancheng.net/uploads/allimg/181229/2-1Q22Z95914431.gif', function(rs){
-            alert(rs.path);
-        });
+        syber.Download.start({
+            url:"http://c.biancheng.net/uploads/allimg/181229/2-1Q22Z95914431.gif",
+            name:'test.gif',
+            success:function(data){
+                console.log(data);
+                document.getElementById("content").innerHTML = JSON.stringify(data);
+            },
+            error:function(err){
+                console.error(JSON.stringify(err));
+            }
+        })
     }
 </script>
 </body>
