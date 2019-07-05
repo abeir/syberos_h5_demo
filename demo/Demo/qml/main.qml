@@ -3,17 +3,12 @@ import QtWebKit 3.0
 import com.syberos.basewidgets 2.0
 import QtWebKit.experimental 1.0
 
+
 CPageStackWindow {
     initialPage:CPage{
+        id: root
         width:parent.width
         height:parent.height
-
-        Connections {
-            target: global
-            onSuccess: {
-                console.log('@@@ id: ', id, ' json: ', json);
-            }
-        }
 
         contentAreaItem: Item{
 
@@ -28,6 +23,11 @@ CPageStackWindow {
 
                 url: "file://" + helper.getWebRootPath() + "/index.html"
 
+                Component.onCompleted: {
+                    global.modelMap = {};
+                    console.log('@@@ completed init modelMap ', JSON.stringify(global.modelMap));
+                }
+
                 experimental.preferences.navigatorQtObjectEnabled: true
 
                 experimental.onMessageReceived: {
@@ -35,12 +35,6 @@ CPageStackWindow {
                     console.log(">>>>> ", "WebView received Message: ", message.data, "\r\n")
 
                     var model = JSON.parse(message.data);
-
-//                    var func = eval('(' + model.module + '.' + model.method + ')');
-//                    console.log('### ', func, '\r\n');
-//                    for(var i in Qt){
-//                        console.log('---- ', i, ' = ', Qt[i], '\r\n');
-//                    }
 
                     console.log('@@@  ', global.getHelper().getWebRootPath(), '\r\n');
 
@@ -56,8 +50,9 @@ CPageStackWindow {
                     }else{
                         result = func();
                     }
+                    global.modelMap[model.id] = model;
 
-                    console.log(func, '\r\n');
+                    console.log('@@@ function: ', func, '\r\n');
 
 
 
@@ -72,11 +67,31 @@ CPageStackWindow {
 //                    var rs = JSON.stringify(result);
 //                    console.log('>>>>> ', 'Send to html: ', rs);
 
-//                    experimental.postMessage(rs);
+
                 }
 
-                Component.onCompleted:{
-                    console.log("Component.onCompleted====")
+                Connections {
+                    target: global
+                    onSuccess: {
+                        var model = global.modelMap[id];
+                        if(model){
+                            delete global.modelMap[id];
+                        }
+
+                        console.log('@@@ id: ', id, ' json: ', json, ' model: ', JSON.stringify(model));
+
+                        var resultJSON = JSON.parse(json);
+                        //{
+                        //    id: number,
+                        //    exception: string,
+                        //    result: object
+                        //}
+                        var result = {
+                            'id': id,
+                            'result': resultJSON
+                        }
+                        webview.experimental.postMessage(JSON.stringify(result));
+                    }
                 }
 
                 experimental.alertDialog: CAlertDialog{

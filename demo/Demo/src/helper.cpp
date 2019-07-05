@@ -50,9 +50,13 @@ void Helper::downloadFile(QString id, QString url){
 void Helper::saveDownloadFile(QString url, QByteArray bytes){
     qDebug() << Q_FUNC_INFO << " url: " << url << endl;
 
-    QString path = getDataRootPath() + "/tmp.gif";
+    QString path = getInnerStorageRootPath() + "/tmp.gif";
     QFile file(path);
-    file.open(QIODevice::WriteOnly);
+    if(!file.open(QIODevice::WriteOnly)){
+        qDebug() << Q_FUNC_INFO << " save fail: " << file.error() << file.errorString() << endl;
+        return;
+    }
+
     file.write(bytes);
     file.close();
 

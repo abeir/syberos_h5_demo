@@ -30,7 +30,7 @@ var common = {
               args = [args];
           }
           var m = {
-              'id': Math.random(),
+              'id': Math.random().toString(),
               'module': module,
               'method': method,
               'args': args,
@@ -57,10 +57,10 @@ var common = {
         var data = msg.data;
         if(data){
             var resultJSON = JSON.parse(data);
-            var model = common._modeList[resultJSON.id];
+            var model = common._modelList[resultJSON.id];
             if(model){
-                delete common._modeList[resultJSON.id];
-                model.callback.call(resultJSON.result);
+                model.callback(resultJSON.result);
+                delete common._modelList[resultJSON.id];
             }
         }
     },

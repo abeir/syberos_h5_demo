@@ -3,12 +3,14 @@
 #include "helper.h"
 #include <QQmlContext>
 #include <QDebug>
+#include <qqml.h>
 
 Demo_Workspace::Demo_Workspace()
     : CWorkspace()
 {
     m_view = SYBEROS::SyberosGuiCache::qQuickView();
     QObject::connect(m_view->engine(), SIGNAL(quit()), qApp, SLOT(quit()));
+
 
     GlobalObject *global = new GlobalObject(this);
     m_view->rootContext()->setContextProperty("global", global);

@@ -5,9 +5,11 @@
 #include "ui.h"
 #include <QObject>
 
+
 class GlobalObject : public QObject
 {
     Q_OBJECT
+
 public:
     explicit GlobalObject(QObject *parent = 0);
     static GlobalObject* instance();

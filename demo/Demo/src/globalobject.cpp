@@ -25,6 +25,7 @@ QObject* GlobalObject::getUi(){
     return ui;
 }
 
+
 void GlobalObject::invokeSuccess(QString id, QString json){
     qDebug() << Q_FUNC_INFO << "id:" << id << "json: " << json << endl;
     emit success(id, json);
