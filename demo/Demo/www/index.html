@@ -25,7 +25,10 @@
 <script>
         var vConsole = new VConsole();
         console.log('Hello world');
-
+            syber.config();
+                  syber.ready(function() {
+                      document.getElementById("content").innerHTML = '注册成功';
+                  });
         document.getElementById("content").innerHTML = JSON.stringify(syber.os);
     function donwload(){
         syber.Download.start({

@@ -68,7 +68,8 @@ CPageStackWindow {
                         var obj = {
                             responseId: callbackId,
                             responseData: {
-                                error: result
+                                code: 0,
+                                msg:result
                             }
                         }
                         webview.experimental.evaluateJavaScript("JSBridge._handleMessageFromNative(" + JSON.stringify(obj) + ")");
@@ -82,7 +83,10 @@ CPageStackWindow {
                         var obj = {
                             responseId: callbackId,
                             responseData: {
-                                'path': path
+                                result:{
+                                    'path': path
+                                }
+
                             }
                         }
                         console.log('@@@ obj:', JSON.stringify(obj), '\r\n');

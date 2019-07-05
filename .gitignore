@@ -1,3 +1,2 @@
-build-demo-Simulator_main_dev-Debug
-build-demo-Device_main_dev-Debug
-build-demo-Device_xuanwu-Debug
+build-*/
+.idea
