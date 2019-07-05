@@ -31,12 +31,13 @@
         syber.Download.start({
             url:"http://c.biancheng.net/uploads/allimg/181229/2-1Q22Z95914431.gif",
             name:'test.gif',
-            success:function(data){
-                console.log(data);
-                document.getElementById("content").innerHTML = JSON.stringify(data);
+            success: function(result) {
+                console.log('success  ', JSON.stringify(result));
+                document.getElementById("content").innerHTML = 'success: ' + JSON.stringify(result);
             },
-            error:function(err){
-                console.error(JSON.stringify(err));
+            error: function(error) {
+                console.log('error   ', '失败:' + JSON.stringify(error));
+                document.getElementById("content").innerHTML = 'error: ' + JSON.stringify(error);
             }
         })
     }

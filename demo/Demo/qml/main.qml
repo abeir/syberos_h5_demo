@@ -25,74 +25,95 @@ CPageStackWindow {
 
                 Component.onCompleted: {
                     global.modelMap = {};
+                    global.callbackIds = [];
+                    global['Download'] = Download;
+
+
                     console.log('@@@ completed init modelMap ', JSON.stringify(global.modelMap));
                 }
 
                 experimental.preferences.navigatorQtObjectEnabled: true
-
+                experimental.userAgent: "SyberOS"
                 experimental.onMessageReceived: {
-
-                    console.log(">>>>> ", "WebView received Message: ", message.data, "\r\n")
+                    console.log("@@@ ", "WebView received Message: ", message.data, "\r\n")
 
                     var model = JSON.parse(message.data);
 
-                    console.log('@@@  ', global.getHelper().getWebRootPath(), '\r\n');
-
-                    var moduleObj = global[model.module]();
-                    var func = moduleObj[model.method];
-
                     var result;
-                    if(model.args){
-                        //TODO
-                        console.log('@@@ ', model.args, '\r\n');
-                        func(model.id, model.args[0]);
+                    if(model.data){
+                        var keys = Object.keys(model.data);
 
+                        var funcArgs = [];
+                        for(var i in keys){
+                            console.log("@@@ ", "key: ", i, keys[i], "\r\n")
+                            funcArgs.push((model.data)[keys[i]]);
+                        }
+                        console.log("@@@ ", "funcArgs: ", funcArgs, "\r\n")
+                        result = global['Download'][model.handlerName].apply(null, funcArgs);
                     }else{
                         result = func();
                     }
-                    global.modelMap[model.id] = model;
-
-                    console.log('@@@ function: ', func, '\r\n');
-
-
-
-//                    experimental.postMessage();
-
-//                    var result = {
-//                        id: data.id,
-//                        text: data.text + ' done! \r\n' + helper.getDataRootPath(),
-//                        newMessage: 'Is ok!'
-//                    }
-
-//                    var rs = JSON.stringify(result);
-//                    console.log('>>>>> ', 'Send to html: ', rs);
-
-
+                    global.modelMap[model.callbackId] = model;
+                    global.callbackIds.push(model.callbackId);
                 }
 
                 Connections {
-                    target: global
-                    onSuccess: {
-                        var model = global.modelMap[id];
-                        if(model){
-                            delete global.modelMap[id];
-                        }
+                    target: Download
+                    onDownloadFailed: {
+                        console.log('@@@ onDownloadFailed: ', downloadID, result, errorCode, "\r\n");
 
-                        console.log('@@@ id: ', id, ' json: ', json, ' model: ', JSON.stringify(model));
+                        var callbackId = global.callbackIds.pop();
+                        var model = global.modelMap[callbackId];
 
-                        var resultJSON = JSON.parse(json);
-                        //{
-                        //    id: number,
-                        //    exception: string,
-                        //    result: object
-                        //}
-                        var result = {
-                            'id': id,
-                            'result': resultJSON
+                        var obj = {
+                            responseId: callbackId,
+                            responseData: {
+                                error: result
+                            }
                         }
-                        webview.experimental.postMessage(JSON.stringify(result));
+                        webview.experimental.evaluateJavaScript("JSBridge._handleMessageFromNative(" + JSON.stringify(obj) + ")");
+                    }
+
+                    onDownloadCompleted: {
+                        console.log('@@@ onDownloadCompleted: ', downloadID, path, "\r\n");
+                        var callbackId = global.callbackIds.pop();
+                        var model = global.modelMap[callbackId];
+
+                        var obj = {
+                            responseId: callbackId,
+                            responseData: {
+                                'path': path
+                            }
+                        }
+                        console.log('@@@ obj:', JSON.stringify(obj), '\r\n');
+                        webview.experimental.evaluateJavaScript("JSBridge._handleMessageFromNative(" + JSON.stringify(obj) + ")");
                     }
                 }
+
+
+//                Connections {
+//                    target: global
+//                    onSuccess: {
+//                        var model = global.modelMap[id];
+//                        if(model){
+//                            delete global.modelMap[id];
+//                        }
+
+//                        console.log('@@@ id: ', id, ' json: ', json, ' model: ', JSON.stringify(model));
+
+//                        var resultJSON = JSON.parse(json);
+//                        //{
+//                        //    id: number,
+//                        //    exception: string,
+//                        //    result: object
+//                        //}
+//                        var result = {
+//                            'id': id,
+//                            'result': resultJSON
+//                        }
+//                        webview.experimental.postMessage(JSON.stringify(result));
+//                    }
+//                }
 
                 experimental.alertDialog: CAlertDialog{
                     id: messageDialog

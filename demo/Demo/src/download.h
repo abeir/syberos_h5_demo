@@ -36,41 +36,41 @@ public:
      * @return 成功则无返回。
      *      失败则返回错误码。
      */
-    long cancel(long downloadID);
+    Q_INVOKABLE long cancel(long downloadID);
     /**
      * @brief getFileInfos 获取所有下载文件信息
      * @return 成功则返回FileInfo数组。
               失败则返回错误码。
      */
-    QList<FileInfo> getFileInfos();
+    Q_INVOKABLE QList<FileInfo> getFileInfos();
     /**
      * @brief pause 暂停下载 (暂不支持)
      * @param downloadID 要暂停的下载任务Id
      * @return 成功则无返回。
                       失败则返回错误码。
      */
-    long pause(long downloadID);
+    Q_INVOKABLE long pause(long downloadID);
     /**
      * @brief removeFileInfos 移除下载文件记录。
      * @param downloadIDs 整型数组, 要移除下载文件的Id。
      * @return 成功则无返回。
                       失败则返回错误码。
      */
-    long removeFileInfos(long downloadIDs[]);
+    Q_INVOKABLE long removeFileInfos(long downloadIDs[]);
     /**
      * @brief restart 重新下载。
      * @param downloadID 要重新下载的任务Id。
      * @return 成功则重新下载后的新任务Id。
                 失败则返回错误码。
      */
-    long restart(long downloadID);
+    Q_INVOKABLE long restart(long downloadID);
     /**
      * @brief resume 恢复下载 (暂不支持)。
      * @param downloadID 要恢复的下载任务Id
      * @return 成功则无返回。
                       失败则返回错误码。
      */
-    long resume(long downloadID);
+    Q_INVOKABLE long resume(long downloadID);
     /**
      * @brief start 开始下载
      * @param url 下载文件地址
@@ -78,7 +78,7 @@ public:
      * @return 成功则下载任务Id。
                      失败则返回错误码。
      */
-    long start(QString url, QString name);
+    Q_INVOKABLE long start(QString url, QString name);
 
 signals:
     /**
