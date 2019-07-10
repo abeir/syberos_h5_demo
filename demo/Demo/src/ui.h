@@ -8,7 +8,7 @@ class Ui : public QObject {
 public:
     explicit Ui(QObject *parent = 0);
 
-    Q_INVOKABLE void button();
+    Q_INVOKABLE void alert(const QString &title, const QString &text);
 signals:
 
 public slots:

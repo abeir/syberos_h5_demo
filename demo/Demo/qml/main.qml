@@ -50,6 +50,8 @@ CPageStackWindow {
                         }
                         console.log("@@@ ", "funcArgs: ", funcArgs, "\r\n")
                         result = global['Download'][model.handlerName].apply(null, funcArgs);
+
+
                     }else{
                         result = func();
                     }
@@ -61,10 +63,13 @@ CPageStackWindow {
                     target: Download
                     onDownloadFailed: {
                         console.log('@@@ onDownloadFailed: ', downloadID, result, errorCode, "\r\n");
-
                         var callbackId = global.callbackIds.pop();
                         var model = global.modelMap[callbackId];
-
+                        if(!model){
+                            return;
+                        }else{
+                            delete global.modelMap[callbackId];
+                        }
                         var obj = {
                             responseId: callbackId,
                             responseData: {
@@ -79,7 +84,11 @@ CPageStackWindow {
                         console.log('@@@ onDownloadCompleted: ', downloadID, path, "\r\n");
                         var callbackId = global.callbackIds.pop();
                         var model = global.modelMap[callbackId];
-
+                        if(!model){
+                            return;
+                        }else{
+                            delete global.modelMap[callbackId];
+                        }
                         var obj = {
                             responseId: callbackId,
                             responseData: {

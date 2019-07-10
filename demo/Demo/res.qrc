@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
-     </qresource>
+    </qresource>
+    <qresource prefix="/images">
+        <file alias="alert-warning">res/images/warning.png</file>
+    </qresource>
 </RCC>
