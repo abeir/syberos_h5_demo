@@ -28,8 +28,13 @@ CPageStackWindow {
                     global.callbackIds = [];
                     global['Download'] = Download;
 
+                    var m = {
+                        'name': 'abeir'
+                    };
+                    var m1 = helper.map(m);
+                    console.log('@@@ map: ', JSON.stringify(m1), '\r\n');
 
-                    console.log('@@@ completed init modelMap ', JSON.stringify(global.modelMap));
+                    console.log('@@@ completed init modelMap ', JSON.stringify(global.modelMap), '\r\n');
                 }
 
                 experimental.preferences.navigatorQtObjectEnabled: true
@@ -41,15 +46,19 @@ CPageStackWindow {
 
                     var result;
                     if(model.data){
-                        var keys = Object.keys(model.data);
+//                        var keys = Object.keys(model.data);
 
-                        var funcArgs = [];
-                        for(var i in keys){
-                            console.log("@@@ ", "key: ", i, keys[i], "\r\n")
-                            funcArgs.push((model.data)[keys[i]]);
-                        }
-                        console.log("@@@ ", "funcArgs: ", funcArgs, "\r\n")
-                        result = global['Download'][model.handlerName].apply(null, funcArgs);
+//                        var funcArgs = [];
+//                        for(var i in keys){
+//                            console.log("@@@ ", "key: ", i, keys[i], "\r\n")
+//                            funcArgs.push((model.data)[keys[i]]);
+//                        }
+//                        console.log("@@@ ", "funcArgs: ", funcArgs, "\r\n")
+//                        result = global['Download'][model.handlerName].apply(null, funcArgs);
+
+                        var ui = global['getUi']();
+                        ui['button']();
+
                     }else{
                         result = func();
                     }

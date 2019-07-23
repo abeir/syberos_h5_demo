@@ -24,14 +24,16 @@ SOURCES += src/main.cpp \
     src/ui.cpp \
     src/globalobject.cpp \
     src/httpclient.cpp \
-    src/download.cpp
+    src/download.cpp \
+    src/extendedconfig.cpp
 
 HEADERS += src/Demo_Workspace.h \
     src/helper.h \
     src/ui.h \
     src/globalobject.h \
     src/httpclient.h \
-    src/download.h
+    src/download.h \
+    src/extendedconfig.h
 
 # Installation path
 target.path = $$INSTALL_DIR/bin
@@ -44,3 +46,4 @@ web.path = $$INSTALL_DIR
 
 INSTALLS += target qm web
 
+DEFINES += EX_CONFIG=\\\"$$EX_CONFIG\\\"

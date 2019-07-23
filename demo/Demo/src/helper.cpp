@@ -45,6 +45,12 @@ void Helper::downloadFile(QString id, QString url){
     urlIdMap[url] = id;
 }
 
+QVariantMap Helper::map(QVariantMap m){
+    m["test"] = "test!!";
+    qDebug() << Q_FUNC_INFO << m << endl;
+    return m;
+}
+
 void Helper::saveDownloadFile(QString url, QByteArray bytes){
     qDebug() << Q_FUNC_INFO << " url: " << url << endl;
 

@@ -19,6 +19,8 @@ public:
 
     Q_INVOKABLE void downloadFile(QString id, QString url);
 
+    Q_INVOKABLE QVariantMap map(QVariantMap m);
+
 signals:
     void success(QString id, QString json);
 
