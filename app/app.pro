@@ -6,7 +6,7 @@
 include (syberos.pri)
 
 TEMPLATE = subdirs
-SUBDIRS +=  Demo tests
+SUBDIRS +=  app tests
 
 res.files = res
 res.path = $$INSTALL_DIR/
