@@ -25,7 +25,9 @@ SOURCES += src/main.cpp \
     src/globalobject.cpp \
     src/httpclient.cpp \
     src/download.cpp \
-    src/extendedconfig.cpp
+    src/extendedconfig.cpp \
+    src/devtools/devtools.cpp \
+    src/devtools/socketclient.cpp
 
 HEADERS += src/Demo_Workspace.h \
     src/helper.h \
@@ -33,7 +35,9 @@ HEADERS += src/Demo_Workspace.h \
     src/globalobject.h \
     src/httpclient.h \
     src/download.h \
-    src/extendedconfig.h
+    src/extendedconfig.h \
+    src/devtools/devtools.h \
+    src/devtools/socketclient.h
 
 # Installation path
 target.path = $$INSTALL_DIR/bin
@@ -47,3 +51,6 @@ web.path = $$INSTALL_DIR
 INSTALLS += target qm web
 
 DEFINES += EX_CONFIG=\\\"$$EX_CONFIG\\\"
+
+DISTFILES += \
+    res/app.png
